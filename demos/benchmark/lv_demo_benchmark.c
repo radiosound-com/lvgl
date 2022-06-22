@@ -744,9 +744,11 @@ static void scene_next_task_cb(lv_timer_t * timer)
 
         title = lv_label_create(lv_scr_act());
         lv_label_set_text_fmt(title, "Weighted FPS: %"LV_PRIu32, fps_weighted);
+        LV_LOG_USER("Weighted FPS: %"LV_PRIu32, fps_weighted);
 
         subtitle = lv_label_create(lv_scr_act());
         lv_label_set_text_fmt(subtitle, "Opa. speed: %"LV_PRIu32"%%", opa_speed_pct);
+        LV_LOG_USER("Opacity speed: %"LV_PRIu32"%%", opa_speed_pct);
 
         lv_coord_t w = lv_obj_get_content_width(lv_scr_act());
         lv_obj_t * table = lv_table_create(lv_scr_act());
