@@ -434,7 +434,7 @@ static void line_cb(void)
 
 }
 
-static void arc_think_cb(void)
+static void arc_thin_cb(void)
 {
 
     lv_style_reset(&style_common);
@@ -547,13 +547,13 @@ static scene_dsc_t scenes[] = {
 
         {.name = "Image RGB",                    .weight = 20, .create_cb = img_rgb_cb},
         {.name = "Image ARGB",                   .weight = 20, .create_cb = img_argb_cb},
-        {.name = "Image chorma keyed",           .weight = 5, .create_cb = img_ckey_cb},
+        {.name = "Image chroma keyed",           .weight = 5, .create_cb = img_ckey_cb},
         {.name = "Image indexed",                .weight = 5, .create_cb = img_index_cb},
         {.name = "Image alpha only",             .weight = 5, .create_cb = img_alpha_cb},
 
         {.name = "Image RGB recolor",            .weight = 5, .create_cb = img_rgb_recolor_cb},
         {.name = "Image ARGB recolor",           .weight = 20, .create_cb = img_argb_recolor_cb},
-        {.name = "Image chorma keyed recolor",   .weight = 3, .create_cb = img_ckey_recolor_cb},
+        {.name = "Image chroma keyed recolor",   .weight = 3, .create_cb = img_ckey_recolor_cb},
         {.name = "Image indexed recolor",        .weight = 3, .create_cb = img_index_recolor_cb},
 
         {.name = "Image RGB rotate",             .weight = 3, .create_cb = img_rgb_rot_cb},
@@ -575,7 +575,7 @@ static scene_dsc_t scenes[] = {
 
         {.name = "Line",                        .weight = 10, .create_cb = line_cb},
 
-        {.name = "Arc think",                   .weight = 10, .create_cb = arc_think_cb},
+        {.name = "Arc thin",                    .weight = 10, .create_cb = arc_thin_cb},
         {.name = "Arc thick",                   .weight = 10, .create_cb = arc_thick_cb},
 
         {.name = "Substr. rectangle",          .weight = 10, .create_cb = sub_rectangle_cb},
@@ -779,6 +779,7 @@ static void scene_next_task_cb(lv_timer_t * timer)
         uint16_t row = 0;
         lv_table_add_cell_ctrl(table, row, 0, LV_TABLE_CELL_CTRL_MERGE_RIGHT);
         lv_table_set_cell_value(table, row, 0, "Slow but common cases");
+        LV_LOG_USER("Slow but common cases:");
 //        lv_table_set_cell_type(table, row, 0, 4);
         row++;
         char buf[256];
@@ -789,6 +790,7 @@ static void scene_next_task_cb(lv_timer_t * timer)
 
                 lv_snprintf(buf, sizeof(buf), "%"LV_PRIu32, scenes[i].fps_normal);
                 lv_table_set_cell_value(table, row, 1, buf);
+                LV_LOG_WARN("\t%s\t%"LV_PRIu32, scenes[i].name, scenes[i].fps_normal);
 
 //                lv_table_set_cell_type(table, row, 0, 2);
 //                lv_table_set_cell_type(table, row, 1, 2);
@@ -802,6 +804,7 @@ static void scene_next_task_cb(lv_timer_t * timer)
 
                 lv_snprintf(buf, sizeof(buf), "%"LV_PRIu32, scenes[i].fps_opa);
                 lv_table_set_cell_value(table, row, 1, buf);
+                LV_LOG_WARN("\t%s + opa\t%"LV_PRIu32, scenes[i].name, scenes[i].fps_opa);
 
 //                lv_table_set_cell_type(table, row, 0, 2);
 //                lv_table_set_cell_type(table, row, 1, 2);
@@ -814,11 +817,13 @@ static void scene_next_task_cb(lv_timer_t * timer)
         if(row == 1) {
             lv_table_add_cell_ctrl(table, row, 0, LV_TABLE_CELL_CTRL_MERGE_RIGHT);
             lv_table_set_cell_value(table, row, 0, "All good");
+            LV_LOG_USER("\tAll good");
             row++;
         }
 
         lv_table_add_cell_ctrl(table, row, 0, LV_TABLE_CELL_CTRL_MERGE_RIGHT);
         lv_table_set_cell_value(table, row, 0, "All cases");
+        LV_LOG_USER("All cases");
 //        lv_table_set_cell_type(table, row, 0, 4);
         row++;
 
@@ -827,6 +832,7 @@ static void scene_next_task_cb(lv_timer_t * timer)
 
             lv_snprintf(buf, sizeof(buf), "%"LV_PRIu32, scenes[i].fps_normal);
             lv_table_set_cell_value(table, row, 1, buf);
+            LV_LOG_USER("\t%s\t%"LV_PRIu32, scenes[i].name, scenes[i].fps_normal);
 
             if(scenes[i].fps_normal < 10) {
 //                lv_table_set_cell_type(table, row, 0, 3);
@@ -844,6 +850,7 @@ static void scene_next_task_cb(lv_timer_t * timer)
 
             lv_snprintf(buf, sizeof(buf), "%"LV_PRIu32, scenes[i].fps_opa);
             lv_table_set_cell_value(table, row, 1, buf);
+            LV_LOG_USER("\t%s + opa\t%"LV_PRIu32, scenes[i].name, scenes[i].fps_opa);
 
 
             if(scenes[i].fps_opa < 10) {
